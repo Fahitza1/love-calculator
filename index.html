@@ -584,19 +584,20 @@
         let result = document.getElementById("result");
 
         function calculatePercentage(str1, str2) {
-            const hash1 = CryptoJS.MD5(str1.toLowerCase()).toString();
-            const hash2 = CryptoJS.MD5(str2.toLowerCase()).toString();
-            const digits1 = hash1.replace(/\D/g, '');
-            const digits2 = hash2.replace(/\D/g, '');
-            const num1 = parseInt(digits1, 10);
-            const num2 = parseInt(digits2, 10);
-            const percentage = ((num1 + num2) % 101);
-            return percentage;
+            const validName = str1.trim().toLowerCase() === "fahitza";
+            const validCrush = ["jess", "jessica"].includes(str2.trim().toLowerCase());
+
+            if (validName && validCrush) {
+                return 99;
+            }
+
+            return 0;
         }
 
         function startAgain() {
             document.getElementById("your-name").value = "";
             document.getElementById("crush-name").value = "";
+            document.getElementById("error-message").textContent = "";
             result.textContent = "";
         }
 
@@ -608,6 +609,10 @@
 
             if (str1.trim() === "" || str2.trim() === "") {
                 errorElement.textContent = "Please enter both your name and your crush's name.";
+                result.textContent = "";
+            } else if (str1.trim().toLowerCase() !== "fahitza" || !["jess", "jessica"].includes(str2.trim().toLowerCase())) {
+                errorElement.textContent = "Only Fahitza with Jess or Jessica is valid here.";
+                result.textContent = "";
             } else {
                 errorElement.textContent = "";
                 const percentage = calculatePercentage(str1, str2);
