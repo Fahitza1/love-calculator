@@ -138,10 +138,10 @@
                     </span>
                     <div class="ml-3 max-w-4xl">
                         <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight text-white leading-tight">
-                            Dear Jess, I love you more than words can express, so I have resorted to numbers to convey the depth of my feelings. You are a special woman to me. I CODED this page while you were saying that I am not acknowledging your love. I want to show you that I am, and I will always be, in love with you. 
+                            Dear Jess, I love you more than words can express, so I have resorted to numbers to convey the depth of my feelings. You are a special woman to me. I CODED this page while you were saying that I am not acknowledging your love. I want to show you that I am, in love with you. 
                         </h1>
                         <p class="mt-4 text-base sm:text-lg md:text-xl text-emerald-100 max-w-2xl">
-                            I know that I am not perfect, but I promise to always strive to be the best version of myself for you. You are my inspiration, my motivation, and my reason for being. I will always cherish and love you, Jess. I'm sorry for not always being the best at showing my emotions but I do love you and I promise to show you that in my very breath. You are mesmirizing. Stunning. Beautiful. Gorgeous. And I am so lucky that you are my woman. 
+                            I know that I am not perfect, Jess. I'm sorry for not always being the best at showing my emotions but I do love you and I promise to show you that in my very breath. You are my mesmirizing, stunning, beautiful, gorgeous girl. And I am so lucky that you are my woman. (no pressure)
                         </p>
                     </div>
                 </div>
@@ -195,7 +195,7 @@
             </svg>
             <div class="text-center">
                 <h2 class="text-4xl font-extrabold tracking-tight text-emerald-700 sm:text-5xl md:text-6xl lg:text-7xl heading">For Jess, with all my heart</h2>
-                <p class="mt-4 text-lg leading-6 text-gray-500">Every beat of my heart spells your name; every line of code becomes a promise to keep you close.</p>
+                <p class="mt-4 text-lg leading-6 text-gray-500"></p>
             </div>
             <div class="mt-12">
                 <form action="#" class="grid grid-cols-1 gap-y-6 sm:grid-cols-2 sm:gap-x-8">
@@ -234,19 +234,44 @@
             </div>
             <div class="text-center mt-8">
                 <h3 id="result" class="text-4xl font-extrabold tracking-tight text-emerald-700 sm:text-5xl"></h3>
+                <p id="reason" class="mt-6 text-lg text-emerald-600 max-w-2xl mx-auto"></p>
             </div>
         </div>
     </div>
     <script>
 
         let result = document.getElementById("result");
+        let reason = document.getElementById("reason");
+        let currentReasonIndex = 0;
+
+        const loveReasons = [
+            "I love her art. She can make just the coolest things and make it look easy.",
+            "Her kindness — she is the most caring person and she shows it even in her touch.",
+            "She's easy to talk to; somehow I never get tired of hearing her voice.",
+            "She's a built-in hype woman; she can convince you that you're awesome enough to climb Mount Everest. Once she cheered for me so hard I built my nightstands.",
+            "She's outdoorsy; she loves nature so much it starts rubbing off on you, and the birds start sounding lovelier and lovelier.",
+            "She's stunning. Self-explanatory.",
+            "A great cook. Though I've yet to try it.",
+            "Good puns. Again, self-explanatory.",
+            "She also enjoys an aquarium.",
+            "I love you, you're just the best."
+        ];
+
+        const validNames = ["jess", "jessica", "fahitza", "fafa"];
+        const allowedPairs = {
+            "jess": ["fahitza", "jessica", "fafa"],
+            "jessica": ["fahitza", "jess", "fafa"],
+            "fahitza": ["jess", "jessica"],
+            "fafa": ["jess", "jessica"]
+        };
 
         function calculatePercentage(str1, str2) {
-            const validName = str1.trim().toLowerCase() === "fahitza";
-            const validCrush = ["jess", "jessica"].includes(str2.trim().toLowerCase());
+            const name1 = str1.trim().toLowerCase();
+            const name2 = str2.trim().toLowerCase();
+            const lovePercentages = [98, 99, 100, 98, 99, 100, 98, 99, 100, 99];
 
-            if (validName && validCrush) {
-                return 99;
+            if (allowedPairs[name1] && allowedPairs[name1].includes(name2)) {
+                return lovePercentages[currentReasonIndex % lovePercentages.length];
             }
 
             return 0;
@@ -257,6 +282,7 @@
             document.getElementById("crush-name").value = "";
             document.getElementById("error-message").textContent = "";
             result.textContent = "";
+            reason.textContent = "";
         }
 
         function calculateAndDisplay(e) {
@@ -265,16 +291,31 @@
             let str2 = document.getElementById("crush-name").value;
             let errorElement = document.getElementById("error-message");
 
+            const name1 = str1.trim().toLowerCase();
+            const name2 = str2.trim().toLowerCase();
+
             if (str1.trim() === "" || str2.trim() === "") {
-                errorElement.textContent = "Please enter both your name and her name.";
+                errorElement.textContent = "Please enter both names.";
                 result.textContent = "";
-            } else if (str1.trim().toLowerCase() !== "fahitza" || !["jess", "jessica"].includes(str2.trim().toLowerCase())) {
-                errorElement.textContent = "Only Fahitza with Jess or Jessica is valid here.";
+                reason.textContent = "";
+            } else if (!validNames.includes(name1) || !validNames.includes(name2)) {
+                errorElement.textContent = "Valid names are Jess, Jessica, Fahitza, or Fafa.";
                 result.textContent = "";
+                reason.textContent = "";
+            } else if (name1 === name2) {
+                errorElement.textContent = "The names cannot be the same. Choose one Jess-style name and one Fahitza-style name.";
+                result.textContent = "";
+                reason.textContent = "";
+            } else if (!allowedPairs[name1] || !allowedPairs[name1].includes(name2)) {
+                errorElement.textContent = "That pairing is not allowed here. Try Jess or Jessica with Fahitza, or Fahitza or Fafa with Jess or Jessica.";
+                result.textContent = "";
+                reason.textContent = "";
             } else {
                 errorElement.textContent = "";
                 const percentage = calculatePercentage(str1, str2);
                 result.textContent = `${str1} and ${str2} share a ${percentage}% bond.`;
+                reason.textContent = `Reason ${currentReasonIndex + 1}: ${loveReasons[currentReasonIndex]}`;
+                currentReasonIndex = (currentReasonIndex + 1) % loveReasons.length;
             }
         }
 
